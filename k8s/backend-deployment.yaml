@@ -27,23 +27,11 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: flask-api-db-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: flask-api-db-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: flask-api-db-config
-                  key: POSTGRES_DB
             - name: DB_URL
-              value: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flask-api-db:5432/${POSTGRES_DB}"
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-api-config
+                  key: DB_URL
           resources:
             requests:
               memory: "64Mi"
@@ -53,13 +41,13 @@ spec:
               cpu: "500m"
           readinessProbe:
             httpGet:
-              path: /health/ready
+              path: /users/health/ready
               port: 5000
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /health/live
+              path: /users/health/live
               port: 5000
             initialDelaySeconds: 15
             periodSeconds: 20

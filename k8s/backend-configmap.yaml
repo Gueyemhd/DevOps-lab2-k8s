@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-api-config
+data:
+  DB_URL: "postgresql://postgres:postgres@flask-api-db:5432/postgres" # URL de connexion à la base de données
+
