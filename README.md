@@ -29,7 +29,7 @@
 4. **Accéder à l'application :**
    Utilisez l'IP de Minikube et le NodePort pour accéder à l'application.
    ```bash
-   minikube service flask-api --url
+   minikube service flask-api
    ```
 
 ## Endpoints de santé
