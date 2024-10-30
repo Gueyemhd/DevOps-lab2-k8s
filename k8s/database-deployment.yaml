@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-api-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-api-db
+  template:
+    metadata:
+      labels:
+        app: flask-api-db
+    spec:
+      containers:
+        - name: flask-api-db
+          image: postgres
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-api-db-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: flask-api-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-api-db-config
+                  key: POSTGRES_DB
+            - name: DB_URL
+              value: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flask-api-db:5432/${POSTGRES_DB}"
+          ports:
+            - containerPort: 5432
